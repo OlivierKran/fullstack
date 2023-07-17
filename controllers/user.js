@@ -34,7 +34,7 @@ exports.login = (req, res, next) => {
                             //requête token correspond bien au user id
                             { userId: user._id},
                             //clé secrète pour l'encodage
-                            'RNDOM_TOKEN_SECRET',
+                            'RANDOM_TOKEN_SECRET',
                             //configuration
                             { expiresIn: '24h' }
                         )

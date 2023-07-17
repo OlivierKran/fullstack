@@ -1,12 +1,21 @@
 const Thing = require('../models/thing');
 
+
 exports.createThing = (req, res, next) => {
-    delete req.body._id;
+    console.log("createThing");
+    const thingObject = JSON.parse(req.body.thing);
+    delete thingObject._id;
+    //on delete le userId pour utiliser celui du token
+    delete thingObject._userId;
+
     const thing = new Thing ({
-        ...req.body
+        ...thingObject,
+        userId: req.auth.userId,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
+    console.log(thing);
     thing.save()
-        .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
+        .then(() => { res.status(201).json({ message: 'Objet enregistré !'})})
         .catch(error => res.status(400).json({error}));
 };
 
